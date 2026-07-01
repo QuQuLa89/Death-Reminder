@@ -1,0 +1,6 @@
+name: DeathReminder
+version: ${version}
+main: dev.ququla.deathreminder.DeathReminderPlugin
+api-version: "1.21"
+author: ququla
+description: Sends the player's death coordinates with /me when they respawn.

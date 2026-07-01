@@ -1,0 +1,36 @@
+.agents/
+.codex/
+
+# Local configuration
+local.properties
+*.env
+*.env.*
+*.log
+
+# Gradle
+.gradle/
+build/
+
+# Kotlin
+.kotlin/
+
+# Java / IDE compiler output
+bin/
+out/
+*.class
+
+# IDE / editor
+*.iml
+.idea/
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
