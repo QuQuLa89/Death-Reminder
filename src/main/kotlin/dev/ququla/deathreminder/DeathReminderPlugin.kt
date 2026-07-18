@@ -9,7 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-class DeathReminderPlugin : JavaPlugin(), Listener {
+class DeathReminderPlugin :
+    JavaPlugin(),
+    Listener {
     private val deathLocations = ConcurrentHashMap<UUID, DeathPosition>()
 
     override fun onEnable() {
@@ -31,11 +33,14 @@ class DeathReminderPlugin : JavaPlugin(), Listener {
         val player = event.player
         val deathPosition = deathLocations.remove(player.uniqueId) ?: return
 
-        server.scheduler.runTask(this, Runnable {
-            if (!player.isOnline) return@Runnable
+        server.scheduler.runTask(
+            this,
+            Runnable {
+                if (!player.isOnline) return@Runnable
 
-            player.performCommand("me died at ${deathPosition.toMessage()}")
-        })
+                player.performCommand("me died at ${deathPosition.toMessage()}")
+            },
+        )
     }
 }
 
@@ -48,13 +53,12 @@ private data class DeathPosition(
     fun toMessage(): String = "world=$worldName x=$x y=$y z=$z"
 
     companion object {
-        fun from(location: Location): DeathPosition {
-            return DeathPosition(
+        fun from(location: Location): DeathPosition =
+            DeathPosition(
                 worldName = location.world?.name ?: "unknown",
                 x = location.blockX,
                 y = location.blockY,
                 z = location.blockZ,
             )
-        }
     }
 }
