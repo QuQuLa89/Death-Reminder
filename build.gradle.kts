@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.ququla"
-version = "1.0.0"
+version = "1.0.1"
 
 java {
     toolchain {
@@ -18,9 +18,21 @@ kotlin {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    testImplementation(kotlin("test-junit5"))
+    testImplementation("org.mockito:mockito-core:5.20.0")
+    testImplementation("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks {
+    jar {
+        enabled = false
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
     processResources {
         val props = mapOf("version" to project.version)
         inputs.properties(props)

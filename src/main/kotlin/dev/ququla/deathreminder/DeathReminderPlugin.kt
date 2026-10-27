@@ -1,5 +1,6 @@
 package dev.ququla.deathreminder
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -33,13 +34,14 @@ class DeathReminderPlugin :
         val player = event.player
         val deathPosition = deathLocations.remove(player.uniqueId) ?: return
 
-        server.scheduler.runTask(
+        player.scheduler.run(
             this,
-            Runnable {
-                if (!player.isOnline) return@Runnable
+            { _ ->
+                if (!player.isOnline) return@run
 
-                player.performCommand("me died at ${deathPosition.toMessage()}")
+                server.broadcast(Component.text("* ${player.name} died at ${deathPosition.toMessage()}"))
             },
+            null,
         )
     }
 }
