@@ -1,0 +1,7 @@
+# Notification visibility on respawn:
+# - broadcast: send death coordinates to all players (default)
+# - private: send death coordinates only to the player who died
+notification-visibility: broadcast
+
+# Maximum number of death positions retained per player
+max-history: 10

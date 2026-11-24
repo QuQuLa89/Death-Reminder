@@ -3,5 +3,9 @@ version: ${version}
 main: dev.ququla.deathreminder.DeathReminderPlugin
 api-version: "1.21"
 author: QuQuLa89
-description: Broadcasts the player's death coordinates when they respawn.
+description: Broadcasts or sends the player's death coordinates when they respawn and records death history.
 folia-supported: true
+commands:
+  lastdeath:
+    description: Shows your recent death coordinates.
+    usage: /lastdeath [count]
