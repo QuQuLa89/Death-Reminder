@@ -49,4 +49,40 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
+
+    register("deployTest") {
+        group = "deployment"
+        description = "Build shadowJar and deploy to the test server via MC_DEPLOY_SCRIPT."
+        dependsOn(shadowJar)
+        val jarProvider = shadowJar.flatMap { it.archiveFile }
+        val scriptProvider =
+            providers
+                .gradleProperty("deployScript")
+                .orElse(providers.environmentVariable("MC_DEPLOY_SCRIPT"))
+        doLast {
+            val scriptPath =
+                scriptProvider.orNull
+                    ?: error("Set MC_DEPLOY_SCRIPT environment variable or pass -PdeployScript=<path>.")
+            val jarFile = jarProvider.get().asFile
+            val shell = if (System.getProperty("os.name").lowercase().contains("win")) "powershell" else "pwsh"
+            val exitCode =
+                ProcessBuilder(
+                    shell,
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    scriptPath,
+                    "-JarPath",
+                    jarFile.absolutePath,
+                    "-Target",
+                    "plugin",
+                ).inheritIO()
+                    .start()
+                    .waitFor()
+            if (exitCode != 0) {
+                error("Deploy script failed with exit code $exitCode")
+            }
+        }
+    }
 }
